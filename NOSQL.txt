@@ -1,0 +1,601 @@
+
+test> show dbs
+admin   40.00 KiB
+config  12.00 KiB
+local   40.00 KiB
+test> use collegedb
+switched to db collegedb
+collegedb> db.createCollection("teacherInfo")
+{ ok: 1 }
+collegedb> show collections
+teacherInfo
+collegedb> db.createCollection('studentInfo')
+{ ok: 1 }
+collegedb> show collections
+studentInfo
+teacherInfo
+collegedb> db.createCollection('courseInfo')
+{ ok: 1 }
+collegedb> show collections
+courseInfo
+studentInfo
+teacherInfo
+collegedb> db.studentinfo.insertOne({name:"Pallavi",age:21,cgpa:8.5})
+{
+  acknowledged: true,
+  insertedId: ObjectId('6994320a9fefd3fc844d7942')
+}
+collegedb> db.studentinfo.insertMany([{name:"Snehal",age:20,cgpa:8.5},{name:"Vaishnavi",age:21,cgpa:8.3}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('699433d79fefd3fc844d7943'),
+    '1': ObjectId('699433d79fefd3fc844d7944')
+  }
+}
+collegedb> db.studentinfo.insertMany({name:"Jyoti",age:21,cgpa:8.4})
+MongoInvalidArgumentError: Argument "docs" must be an array of documents
+collegedb> db.studentinfo.insertOne({name:"Jyoti",age:21,cgpa:8.4})
+{
+  acknowledged: true,
+  insertedId: ObjectId('699434479fefd3fc844d7945')
+}
+collegedb> db.studentinfo.insertMany([{name:"Jyoti",age:21,cgpa:8.4},{name:"Snehal",age:20,cgpa:8.5},{name:"Vaishnavi",age:21,cgpa:8.4}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('699435779fefd3fc844d7946'),
+    '1': ObjectId('699435779fefd3fc844d7947'),
+    '2': ObjectId('699435779fefd3fc844d7948')
+  }
+}
+collegedb> show collections
+courseInfo
+studentinfo
+studentInfo
+teacherInfo
+collegedb> drop studentinfo
+Uncaught:
+SyntaxError: Missing semicolon. (1:4)
+
+> 1 | drop studentinfo
+    |     ^
+  2 |
+
+collegedb> db.teacherInfo.insertOne({name:"Gautam Ghambir",age:42,subject:"head coach",exp:10})
+{
+  acknowledged: true,
+  insertedId: ObjectId('699438229fefd3fc844d7949')
+}
+collegedb> db.teacherInfo.insertMany([{name:"sachin",age:50,subject:"batting coach",exp:18},{name:"Ravi sh",age:52,subject:"assistant coach"},{name:"Anil k",age:49,subject:["phejo coach","bowling coach"],exp:20}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('6994394b9fefd3fc844d794a'),
+    '1': ObjectId('6994394b9fefd3fc844d794b'),
+    '2': ObjectId('6994394b9fefd3fc844d794c')
+  }
+}
+collegedb> db.studentinfo.drop()
+true
+collegedb> db.studentInfo.insertOne({name:"Pallavi",age:21,cgpa:8.6
+... db.studentInfo.insertOne({name:"Pallavi",age:21,cgpa:8.6
+Uncaught:
+SyntaxError: Unexpected token, expected "," (2:0)
+
+  1 | db.studentInfo.insertOne({name:"Pallavi",age:21,cgpa:8.6
+> 2 | db.studentInfo.insertOne({name:"Pallavi",age:21,cgpa:8.6
+    | ^
+  3 |
+
+collegedb> db.studentInfo.insertOne({name:"Pallavi",age:21,cgpa:8.6})
+{
+  acknowledged: true,
+  insertedId: ObjectId('699439fd9fefd3fc844d794d')
+}
+collegedb> db.studentInfo.insertMany([{name:"Snehal",age:20,cgpa:8.5},{name:"Vaishnavi",age:22,cgpa:8.3},{name:"Jyoti",age:21,cgpa:8.1}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('69943a569fefd3fc844d794e'),
+    '1': ObjectId('69943a569fefd3fc844d794f'),
+    '2': ObjectId('69943a569fefd3fc844d7950')
+  }
+}
+collegedb> studentInfo.find()
+ReferenceError: studentInfo is not defined
+collegedb> studentinfo.find()
+ReferenceError: studentinfo is not defined
+collegedb> show collections
+courseInfo
+studentInfo
+teacherInfo
+collegedb> db.studentInfo.find()
+[
+  {
+    _id: ObjectId('699439fd9fefd3fc844d794d'),
+    name: 'Pallavi',
+    age: 21,
+    cgpa: 8.6
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d794e'),
+    name: 'Snehal',
+    age: 20,
+    cgpa: 8.5
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d794f'),
+    name: 'Vaishnavi',
+    age: 22,
+    cgpa: 8.3
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d7950'),
+    name: 'Jyoti',
+    age: 21,
+    cgpa: 8.1
+  }
+]
+collegedb> db.studentInfo.find().limit(2)
+[
+  {
+    _id: ObjectId('699439fd9fefd3fc844d794d'),
+    name: 'Pallavi',
+    age: 21,
+    cgpa: 8.6
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d794e'),
+    name: 'Snehal',
+    age: 20,
+    cgpa: 8.5
+  }
+]
+collegedb> db.studentInfo.find().sort({age(1)})
+Uncaught:
+SyntaxError: Unexpected token (1:32)
+
+> 1 | db.studentInfo.find().sort({age(1)})
+    |                                 ^
+  2 |
+
+collegedb> db.studentInfo.find().sort({age:1})
+[
+  {
+    _id: ObjectId('69943a569fefd3fc844d794e'),
+    name: 'Snehal',
+    age: 20,
+    cgpa: 8.5
+  },
+  {
+    _id: ObjectId('699439fd9fefd3fc844d794d'),
+    name: 'Pallavi',
+    age: 21,
+    cgpa: 8.6
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d7950'),
+    name: 'Jyoti',
+    age: 21,
+    cgpa: 8.1
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d794f'),
+    name: 'Vaishnavi',
+    age: 22,
+    cgpa: 8.3
+  }
+]
+collegedb> db.studentInfo.find().sort({age:-1})
+[
+  {
+    _id: ObjectId('69943a569fefd3fc844d794f'),
+    name: 'Vaishnavi',
+    age: 22,
+    cgpa: 8.3
+  },
+  {
+    _id: ObjectId('699439fd9fefd3fc844d794d'),
+    name: 'Pallavi',
+    age: 21,
+    cgpa: 8.6
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d7950'),
+    name: 'Jyoti',
+    age: 21,
+    cgpa: 8.1
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d794e'),
+    name: 'Snehal',
+    age: 20,
+    cgpa: 8.5
+  }
+]
+collegedb> db.studentInfo.find().sort({age:-1}).limit(1)
+[
+  {
+    _id: ObjectId('69943a569fefd3fc844d794f'),
+    name: 'Vaishnavi',
+    age: 22,
+    cgpa: 8.3
+  }
+]
+collegedb> db.studentInfo.find({age:20},{name:true})
+[ { _id: ObjectId('69943a569fefd3fc844d794e'), name: 'Snehal' } ]
+collegedb> db.studentInfo.find({age:20},{name:true,_id:false})
+[ { name: 'Snehal' } ]
+collegedb> db.studentInfo.find({age:21},{name:true,_id:false})
+[ { name: 'Pallavi' }, { name: 'Jyoti' } ]
+collegedb> db.studentInfo.find({age:21},{name:true,age:true,_id:false})
+[ { name: 'Pallavi', age: 21 }, { name: 'Jyoti', age: 21 } ]
+collegedb> db.teacherInfo.find()
+[
+  {
+    _id: ObjectId('699438229fefd3fc844d7949'),
+    name: 'Gautam Ghambir',
+    age: 42,
+    subject: 'head coach',
+    exp: 10
+  },
+  {
+    _id: ObjectId('6994394b9fefd3fc844d794a'),
+    name: 'sachin',
+    age: 50,
+    subject: 'batting coach',
+    exp: 18
+  },
+  {
+    _id: ObjectId('6994394b9fefd3fc844d794b'),
+    name: 'Ravi sh',
+    age: 52,
+    subject: 'assistant coach'
+  },
+  {
+    _id: ObjectId('6994394b9fefd3fc844d794c'),
+    name: 'Anil k',
+    age: 49,
+    subject: [ 'phejo coach', 'bowling coach' ],
+    exp: 20
+  }
+]
+collegedb> db.teacherInfo
+collegedb.teacherInfo
+collegedb> db.teacherInfo.updateOne({name:"Anil k"},{$set:{exp=22}})
+... db
+Uncaught:
+SyntaxError: Invalid shorthand property initializer. (1:51)
+
+> 1 | db.teacherInfo.updateOne({name:"Anil k"},{$set:{exp=22}})
+    |                                                    ^
+  2 | db
+  3 |
+
+collegedb> db.teacherInfo.updateOne({name:"Anil k"},{$set:{exp:22}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+collegedb> db.teacherInfo.find({name:"Anil k"})
+[
+  {
+    _id: ObjectId('6994394b9fefd3fc844d794c'),
+    name: 'Anil k',
+    age: 49,
+    subject: [ 'phejo coach', 'bowling coach' ],
+    exp: 22
+  }
+]
+collegedb> db.teacherInfo.updateMany({},{$set:{exp:28})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:43)
+
+> 1 | db.teacherInfo.updateMany({},{$set:{exp:28})
+    |                                            ^
+  2 |
+
+collegedb> db.teacherInfo.updateMany({},{$set:{exp:28}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 4,
+  modifiedCount: 4,
+  upsertedCount: 0
+}
+collegedb> db.teacherInfo.find()
+[
+  {
+    _id: ObjectId('699438229fefd3fc844d7949'),
+    name: 'Gautam Ghambir',
+    age: 42,
+    subject: 'head coach',
+    exp: 28
+  },
+  {
+    _id: ObjectId('6994394b9fefd3fc844d794a'),
+    name: 'sachin',
+    age: 50,
+    subject: 'batting coach',
+    exp: 28
+  },
+  {
+    _id: ObjectId('6994394b9fefd3fc844d794b'),
+    name: 'Ravi sh',
+    age: 52,
+    subject: 'assistant coach',
+    exp: 28
+  },
+  {
+    _id: ObjectId('6994394b9fefd3fc844d794c'),
+    name: 'Anil k',
+    age: 49,
+    subject: [ 'phejo coach', 'bowling coach' ],
+    exp: 28
+  }
+]
+collegedb> db.teacherInfo.updateMany({name:"ravi sh"},{$unset:{exp:20}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 0,
+  modifiedCount: 0,
+  upsertedCount: 0
+}
+collegedb> db.teacherInfo.find()
+[
+  {
+    _id: ObjectId('699438229fefd3fc844d7949'),
+    name: 'Gautam Ghambir',
+    age: 42,
+    subject: 'head coach',
+    exp: 28
+  },
+  {
+    _id: ObjectId('6994394b9fefd3fc844d794a'),
+    name: 'sachin',
+    age: 50,
+    subject: 'batting coach',
+    exp: 28
+  },
+  {
+    _id: ObjectId('6994394b9fefd3fc844d794b'),
+    name: 'Ravi sh',
+    age: 52,
+    subject: 'assistant coach',
+    exp: 28
+  },
+  {
+    _id: ObjectId('6994394b9fefd3fc844d794c'),
+    name: 'Anil k',
+    age: 49,
+    subject: [ 'phejo coach', 'bowling coach' ],
+    exp: 28
+  }
+]
+collegedb> db.studentInfo.find({name:"dhoni",age:19})
+
+collegedb> db.studentInfo.find()
+[
+  {
+    _id: ObjectId('699439fd9fefd3fc844d794d'),
+    name: 'Pallavi',
+    age: 21,
+    cgpa: 8.6
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d794e'),
+    name: 'Snehal',
+    age: 20,
+    cgpa: 8.5
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d794f'),
+    name: 'Vaishnavi',
+    age: 22,
+    cgpa: 8.3
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d7950'),
+    name: 'Jyoti',
+    age: 21,
+    cgpa: 8.1
+  }
+]
+collegedb> db.studentInfo.find({name:{$eq:"dhoni"}})
+
+collegedb> db.studentInfo.find({name:{$eq:"Pallavi"}})
+[
+  {
+    _id: ObjectId('699439fd9fefd3fc844d794d'),
+    name: 'Pallavi',
+    age: 21,
+    cgpa: 8.6
+  }
+]
+collegedb> db.studentInfo.find({name:{$ne:"Pallavi"}})
+[
+  {
+    _id: ObjectId('69943a569fefd3fc844d794e'),
+    name: 'Snehal',
+    age: 20,
+    cgpa: 8.5
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d794f'),
+    name: 'Vaishnavi',
+    age: 22,
+    cgpa: 8.3
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d7950'),
+    name: 'Jyoti',
+    age: 21,
+    cgpa: 8.1
+  }
+]
+collegedb>  db.studentInfo.find({age:{$gte:20,$lte:21}},{name:true,age:true,_id:false})
+[
+  { name: 'Pallavi', age: 21 },
+  { name: 'Snehal', age: 20 },
+  { name: 'Jyoti', age: 21 }
+]
+collegedb>  db.studentInfo.find({age:{$in:[19,20,21,22,23]}})
+[
+  {
+    _id: ObjectId('699439fd9fefd3fc844d794d'),
+    name: 'Pallavi',
+    age: 21,
+    cgpa: 8.6
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d794e'),
+    name: 'Snehal',
+    age: 20,
+    cgpa: 8.5
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d794f'),
+    name: 'Vaishnavi',
+    age: 22,
+    cgpa: 8.3
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d7950'),
+    name: 'Jyoti',
+    age: 21,
+    cgpa: 8.1
+  }
+]
+collegedb>  db.studentInfo.find({$and:[{name:"Pallavi",{age:{$gte;21}}]})
+Uncaught:
+SyntaxError: Unexpected token (1:44)
+
+> 1 |  db.studentInfo.find({$and:[{name:"Pallavi",{age:{$gte;21}}]})
+    |                                             ^
+  2 |
+
+collegedb>  db.studentInfo.find({$and:[{name:"Pallavi"},{age:{$gte;21}}]})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:55)
+
+> 1 |  db.studentInfo.find({$and:[{name:"Pallavi"},{age:{$gte;21}}]})
+    |                                                        ^
+  2 |
+
+collegedb>  db.studentInfo.find({$and:[{name:"Pallavi"},{age:{$gte:21}}]})
+[
+  {
+    _id: ObjectId('699439fd9fefd3fc844d794d'),
+    name: 'Pallavi',
+    age: 21,
+    cgpa: 8.6
+  }
+]
+collegedb>  db.studentInfo.deleteOne({name:"Jyoti"})
+{ acknowledged: true, deletedCount: 1 }
+collegedb>  db.studentInfo.find()
+[
+  {
+    _id: ObjectId('699439fd9fefd3fc844d794d'),
+    name: 'Pallavi',
+    age: 21,
+    cgpa: 8.6
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d794e'),
+    name: 'Snehal',
+    age: 20,
+    cgpa: 8.5
+  },
+  {
+    _id: ObjectId('69943a569fefd3fc844d794f'),
+    name: 'Vaishnavi',
+    age: 22,
+    cgpa: 8.3
+  }
+]
+collegedb> db.teacherInfo.find({name:"dhoni"}).explain('executionStats')
+{
+  explainVersion: '1',
+  queryPlanner: {
+    namespace: 'collegedb.teacherInfo',
+    parsedQuery: { name: { '$eq': 'dhoni' } },
+    indexFilterSet: false,
+    planCacheShapeHash: '544F3E5C',
+    planCacheKey: 'B9363AF4',
+    optimizationTimeMillis: 0,
+    maxIndexedOrSolutionsReached: false,
+    maxIndexedAndSolutionsReached: false,
+    maxScansToExplodeReached: false,
+    prunedSimilarIndexes: false,
+    winningPlan: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: { name: { '$eq': 'dhoni' } },
+      direction: 'forward'
+    },
+    rejectedPlans: []
+  },
+  executionStats: {
+    executionSuccess: true,
+    nReturned: 0,
+    executionTimeMillis: 71,
+    totalKeysExamined: 0,
+    totalDocsExamined: 4,
+    executionStages: {
+      isCached: false,
+      stage: 'COLLSCAN',
+      filter: { name: { '$eq': 'dhoni' } },
+      nReturned: 0,
+      executionTimeMillisEstimate: 52,
+      works: 5,
+      advanced: 0,
+      needTime: 4,
+      needYield: 0,
+      saveState: 1,
+      restoreState: 1,
+      isEOF: 1,
+      direction: 'forward',
+      docsExamined: 4
+    }
+  },
+  queryShapeHash: 'D21EBB8684A51FBCA15194035678AFC1FBB24476702CBB379076800465CD7358',
+  command: {
+    find: 'teacherInfo',
+    filter: { name: 'dhoni' },
+    '$db': 'collegedb'
+  },
+  serverInfo: {
+    host: 'DESKTOP-UVKHMKN',
+    port: 27017,
+    version: '8.0.4',
+    gitVersion: 'bc35ab4305d9920d9d0491c1c9ef9b72383d31f9'
+  },
+  serverParameters: {
+    internalQueryFacetBufferSizeBytes: 104857600,
+    internalQueryFacetMaxOutputDocSizeBytes: 104857600,
+    internalLookupStageIntermediateDocumentMaxSizeBytes: 104857600,
+    internalDocumentSourceGroupMaxMemoryBytes: 104857600,
+    internalQueryMaxBlockingSortMemoryUsageBytes: 104857600,
+    internalQueryProhibitBlockingMergeOnMongoS: 0,
+    internalQueryMaxAddToSetBytes: 104857600,
+    internalDocumentSourceSetWindowFieldsMaxMemoryBytes: 104857600,
+    internalQueryFrameworkControl: 'trySbeRestricted',
+    internalQueryPlannerIgnoreIndexWithCollationForRegex: 1
+  },
+  ok: 1
+}
+collegedb> db.teacherInfo.createIndex({name:1})
+name_1
+collegedb> db.teacherInfo.getIndexes()
+[
+  { v: 2, key: { _id: 1 }, name: '_id_' },
+  { v: 2, key: { name: 1 }, name: 'name_1' }
+]
+collegedb> db.teacherInfo.dropIndexes("name_1")
+{ nIndexesWas: 2, ok: 1 }
